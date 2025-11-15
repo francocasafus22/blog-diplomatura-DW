@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend de ecommerce",
+  "homepage": "https://github.com/francocasafus22/ecommerce-diplomatura-DW#readme",
+  "bugs": {
+    "url": "https://github.com/francocasafus22/ecommerce-diplomatura-DW/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/francocasafus22/ecommerce-diplomatura-DW.git"
+  },
+  "license": "ISC",
+  "author": "Franco Casafus",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-validator": "^7.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.4",
+    "nodemon": "^3.1.11",
+    "slug": "^11.0.1"
+  }
+}
