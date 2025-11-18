@@ -5,7 +5,7 @@ import { logger } from "../config/winston.js";
 export default class userController {
   static async getAll(req, res) {
     try {
-      const users = await User.find();
+      const users = await User.find().select("-password -__v");
       res.json(users);
     } catch (error) {
       res.status(500).json({ error: "Hubo un error al obtener los usuarios" });
@@ -20,10 +20,7 @@ export default class userController {
 
       res.status(201).json({ message: "Usuario registrado correctamente" });
     } catch (error) {
-      logger.error(error);
-      res
-        .status(error.status || 500)
-        .json({ error: error.message || "Error interno del servidor" });
+      next(error);
     }
   }
 

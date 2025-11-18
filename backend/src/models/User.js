@@ -10,12 +10,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    favourite_products: [
-      {
-        type: Types.ObjectId,
-        ref: "Product",
-      },
-    ],
+
     email: {
       type: String,
       required: true,
@@ -25,37 +20,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    dni: {
-      type: Number,
-      required: true,
-    },
+
     rol: {
       type: String,
       default: "user",
     },
-    direcciones: [
-      {
-        calle: String,
-        numero: String,
-        ciudad: String,
-        provincia: String,
-        codigoPostal: String,
-        principal: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
-    historial_compras: [
-      {
-        orderId: {
-          type: Types.ObjectId,
-          ref: "Order",
-        },
-        total: Number,
-        fecha: Date,
-      },
-    ],
   },
   {
     timestamps: true,

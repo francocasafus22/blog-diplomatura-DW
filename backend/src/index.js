@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRouter.js";
 import { logger } from "./config/winston.js";
-import { errorHandler } from "./middlewares/errorHandler.js";
+import { errorHandler } from "./middlewares/logger.middleware.js";
+import postRouter from "./routes/postRouter.js";
 
 dotenv.config();
 connectDB();
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/user", userRouter);
+app.use("/api/post", postRouter);
 
 app.use(errorHandler);
 

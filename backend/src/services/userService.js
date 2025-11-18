@@ -1,5 +1,7 @@
 import User from "../models/User.js";
 import { hashPassword } from "../utils/auth.js";
+import { checkPassword } from "../utils/auth.js";
+import { createToken } from "../utils/jwt.js";
 
 export async function loginService(email, password) {
   const user = await User.findOne({ email });
