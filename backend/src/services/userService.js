@@ -4,6 +4,20 @@ import { hashPassword } from "../utils/auth.js";
 import { checkPassword } from "../utils/auth.js";
 import { createToken } from "../utils/jwt.js";
 
+export async function editProfile({ data, user }) {
+  try {
+    const forbiddenField = ["_id", "rol", "password"];
+    forbiddenField.forEach((field) => delete data[field]);
+
+    Object.assign(user, data);
+
+    await user.save();
+  } catch (error) {
+    console.error("[EDIT PROFILE]".error, `Error: ${error.message}`);
+    throw error;
+  }
+}
+
 export async function loginService(email, password) {
   const user = await User.findOne({ email });
 

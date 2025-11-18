@@ -8,4 +8,6 @@ colors.setTheme({
   info: ["blue"],
 });
 
+colors.enable();
+
 export default colors;

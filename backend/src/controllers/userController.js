@@ -1,6 +1,9 @@
 import User from "../models/User.js";
-import { loginService, registerService } from "../services/userService.js";
-import { logger } from "../config/winston.js";
+import {
+  loginService,
+  registerService,
+  editProfile,
+} from "../services/userService.js";
 
 export default class userController {
   static async getAll(req, res) {
@@ -9,6 +12,16 @@ export default class userController {
       res.json(users);
     } catch (error) {
       res.status(500).json({ error: "Hubo un error al obtener los usuarios" });
+    }
+  }
+
+  static async edit(req, res, next) {
+    try {
+      await editProfile({ data: req.body, user: req.user });
+
+      res.json({ message: "Perfil editado correctaments" });
+    } catch (error) {
+      next(error);
     }
   }
 

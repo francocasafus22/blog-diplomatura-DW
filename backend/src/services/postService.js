@@ -1,5 +1,4 @@
 import Post from "../models/Post.js";
-import colors from "../config/colors.js";
 
 export async function findPostsByUser(id) {
   const posts = await Post.find({ "author.userId": id });
@@ -49,22 +48,11 @@ export async function editPost({ postData, userId, postId }) {
   }
 }
 
-export async function deletePost({ postId, userId }) {
+export async function deletePost({ postData, userId }) {
   try {
-    const post = await Post.findById(postId);
-    if (!post) {
-      const error = new Error("El post solicitado no existe");
-      error.status = 404;
-      throw error;
-    }
+    await postData.deleteOne();
 
-    if (!post.author.userId.equals(userId)) {
-      const error = new Error("No tienes acceso al post");
-      error.status = 403;
-      throw error;
-    }
-
-    await Post.deleteOne({ _id: postId });
+    // TODO: MIDDLEWARE HAS ACCESS
   } catch (err) {
     console.error("[DELETE POST]".red.bold, `Error: ${err.message}`);
     throw err;

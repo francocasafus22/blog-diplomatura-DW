@@ -41,11 +41,10 @@ export default class PostController {
 
   static async delete(req, res, next) {
     try {
-      const { postId } = req.params;
       const userId = req.user._id;
 
       await deletePost({
-        postId,
+        postData: req.post,
         userId,
       });
 
