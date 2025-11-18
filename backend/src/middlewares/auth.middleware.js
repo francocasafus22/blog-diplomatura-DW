@@ -7,7 +7,7 @@ export default async function authMiddleware(req, res, next) {
 
     if (!bearer) {
       const error = new Error("No estás autorizado");
-      error.status(401);
+      error.status = 401;
       throw error;
     }
 
@@ -31,7 +31,8 @@ export default async function authMiddleware(req, res, next) {
       next();
     }
   } catch (e) {
-    const error = new Error("Token no válido");
+    const error = new Error(e.message || "Token no válido");
+    error.status = e.status || 401;
     next(error);
   }
 }

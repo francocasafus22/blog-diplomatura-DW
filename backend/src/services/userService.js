@@ -1,3 +1,4 @@
+import slugify from "slugify";
 import User from "../models/User.js";
 import { hashPassword } from "../utils/auth.js";
 import { checkPassword } from "../utils/auth.js";
@@ -31,6 +32,7 @@ export async function registerService({
   firstName,
   lastName,
   dni,
+  username,
 }) {
   const userExist = await User.findOne({ $or: [{ email }, { dni }] });
 
@@ -44,10 +46,20 @@ export async function registerService({
     throw error;
   }
 
+  const userSlug = slugify(username, { lower: true, strict: true });
+
+  const usernameExist = await User.findOne({ username: userSlug });
+  if (usernameExist) {
+    const error = new Error("El nombre de usuario ya está en uso");
+    error.status = 409;
+    throw error;
+  }
+
   const hashedPassword = await hashPassword(password);
 
   await User.create({
     email,
+    username: userSlug,
     password: hashedPassword,
     dni,
     firstName,

@@ -14,9 +14,16 @@ export default class userController {
 
   static async register(req, res) {
     try {
-      const { email, password, firstName, lastName, dni } = req.body;
+      const { email, password, firstName, lastName, dni, username } = req.body;
 
-      await registerService({ email, password, firstName, lastName, dni });
+      await registerService({
+        email,
+        password,
+        firstName,
+        lastName,
+        dni,
+        username,
+      });
 
       res.status(201).json({ message: "Usuario registrado correctamente" });
     } catch (error) {

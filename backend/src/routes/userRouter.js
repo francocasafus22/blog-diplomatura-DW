@@ -10,6 +10,7 @@ router.post(
   "/register",
   body("firstName").notEmpty().withMessage("El nombre es obligatorio"),
   body("lastName").notEmpty().withMessage("El apellido es obligatorio"),
+  body("username").notEmpty().withMessage("El username es obligatorio"),
   body("email").isEmail().withMessage("El email no es válido"),
   body("password")
     .isLength({ min: 8 })

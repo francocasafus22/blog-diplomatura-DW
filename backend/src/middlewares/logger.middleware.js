@@ -1,15 +1,14 @@
 import { logger } from "../config/winston.js";
 
 export const errorHandler = (err, req, res, next) => {
+  const status = err.status || 500;
+  const message = status === 500 ? "Internal Server Error" : err.message;
+
   logger.error(
-    `HTTP ${req.method} - ${req.url} - ${err.message} - ${req.user ? req.user_id : null}`,
+    `HTTP ${req.method} - ${req.url} - ${message} - ${req.user ? req.user._id : null}`,
   );
 
-  if (err.status == 500) {
-    res.status(500).json({ error: "Internal Server Error" });
-  } else {
-    res.status(err.status).json({ error: err.message });
-  }
+  res.status(status).json({ error: message });
 };
 
 export const loggerMiddleware = (req, res, next) => {
