@@ -11,3 +11,14 @@ export const errorHandler = (err, req, res, next) => {
     res.status(err.status).json({ error: err.message });
   }
 };
+
+export const loggerMiddleware = (req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    logger.info(
+      `HTTP ${req.method} ${req.url} - ${req.user ? req.user._id : null} - Duration ${duration}ms`,
+    );
+  });
+  next();
+};

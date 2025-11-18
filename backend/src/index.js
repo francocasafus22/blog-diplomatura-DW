@@ -2,8 +2,12 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRouter.js";
-import { logger } from "./config/winston.js";
-import { errorHandler } from "./middlewares/logger.middleware.js";
+
+import {
+  errorHandler,
+  loggerMiddleware,
+} from "./middlewares/logger.middleware.js";
+
 import postRouter from "./routes/postRouter.js";
 
 dotenv.config();
@@ -13,16 +17,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  const start = Date.now();
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    logger.info(
-      `HTTP ${req.method} ${req.url} - ${req.user ? req.user_id : null} - Duration ${duration}ms`,
-    );
-  });
-  next();
-});
+app.use(loggerMiddleware);
 
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);

@@ -1,9 +1,9 @@
-import { getAll } from "../services/postService.js";
+import { findPostsByUser } from "../services/postService.js";
 
 export default class PostController {
-  static async getAll(req, res, next) {
+  static async getAllByUser(req, res, next) {
     try {
-      const posts = await getAll();
+      const posts = await findPostsByUser(req.user._id);
       res.json({ posts });
     } catch (error) {
       next(error);
@@ -12,9 +12,6 @@ export default class PostController {
 
   static async create(req, res, next) {
     try {
-      
-      
-      
     } catch (error) {
       next(error);
     }
