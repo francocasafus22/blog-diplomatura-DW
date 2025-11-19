@@ -15,6 +15,26 @@ export default class userController {
     }
   }
 
+  static async getProfile(req, res, next) {
+    try {
+      const { username } = req.params;
+
+      const user = await User.findOne({ username }).select(
+        "-password -__v -_id -rol",
+      );
+      if (!user) {
+        const error = new Error("No existe el usuario consultado");
+        error.status = 404;
+        throw error;
+      }
+      const isOwner = req.user._id === user._id;
+
+      res.json({ user, isOwner });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async edit(req, res, next) {
     try {
       await editProfile({ data: req.body, user: req.user });

@@ -4,11 +4,19 @@ import {
   findPostsByUser,
   deletePost,
 } from "../services/postService.js";
+import User from "../models/User.js";
 
 export default class PostController {
-  static async getAllByUser(req, res, next) {
+  static async getAllByUsername(req, res, next) {
     try {
-      const posts = await findPostsByUser(req.user._id);
+      const { username } = req.params;
+      const user = await User.find({ username }).select("-password -__v");
+      if (!user) {
+        const error = new Error("El usuario no existe");
+        error.status = 404;
+        throw error;
+      }
+      const posts = await findPostsByUser(user._id);
       res.json({ posts });
     } catch (error) {
       next(error);
