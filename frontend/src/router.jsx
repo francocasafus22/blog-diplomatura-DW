@@ -1,20 +1,20 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
-import AppLayout from "./Layouts/AppLayout"
+import AppLayout from "./layouts/AppLayout"
+import AuthLayout from "./layouts/AuthLayout"
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+
 
 export default function Router(){
-    return(
-        <BrowserRouter>
-        
-            <Routes>
-
-                <Route element={<AppLayout/>}>
-                    <Route path="/" element={<HomePage/>}></Route>
-                </Route>
+    return(         
+        <Routes>
+            <Route element={<AppLayout/>}>
+                <Route path="/" element={<HomePage/>}></Route>
+            </Route>
+            <Route element={<AuthLayout/>}>
                 <Route path="/login" element={<LoginPage/>}></Route>
-            </Routes>
-        
-        </BrowserRouter>
-)
+            </Route>
+        </Routes>              
+    )
 }

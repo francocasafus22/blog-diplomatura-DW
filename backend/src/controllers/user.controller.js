@@ -15,6 +15,14 @@ export default class userController {
     }
   }
 
+  static async getUser(req,res,next){
+    try{
+      res.json(req.user)
+    }catch (error) {
+      next(error);
+    }
+  }
+
   static async getProfile(req, res, next) {
     try {
       const { username } = req.params;

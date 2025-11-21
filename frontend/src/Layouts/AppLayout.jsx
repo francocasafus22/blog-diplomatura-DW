@@ -1,13 +1,33 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import ToastNotifications from "../components/ui/ToastNotifications";
+import { useEffect } from "react";
+import useAuth from "../hooks/useAuth";
+import Loading from "../components/ui/Loading"
 
-export default function AppLayout(){
+export default function AppLayout() {
+    const { user, isLoading, logout } = useAuth();
+    const navigate = useNavigate();
 
-    return(
-        <>
-        
-            <h1>HOla</h1>    
-            <Outlet/>
-        
+    useEffect(() => {
+        if (!isLoading) {
+        if (!user) navigate("/login"); // Redireccionar si no está logeado
+        }
+    }, [user, navigate, isLoading]);
+
+    if (isLoading) {
+        return (
+        <div className="min-h-screen flex items-center justify-center">
+            <Loading/>
+        </div>
+        );
+    }
+
+    if(!user) return null
+
+    return (
+        <>       
+            <Outlet context={user} />
+            <ToastNotifications />
         </>
-    )
+    );
 }
