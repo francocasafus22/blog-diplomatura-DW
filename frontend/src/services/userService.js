@@ -33,3 +33,14 @@ export async function registerUser(formData) {
         }
     }
 }
+
+export async function getProfile(username){
+    try{
+        const {data} = await api.get(`/user/profile/${username}`);
+        return data 
+    }catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
+}

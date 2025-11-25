@@ -28,14 +28,16 @@ export default class userController {
       const { username } = req.params;
 
       const user = await User.findOne({ username }).select(
-        "-password -__v -_id -rol",
+        "-password -__v -rol",
       );
       if (!user) {
         const error = new Error("No existe el usuario consultado");
         error.status = 404;
         throw error;
       }
-      const isOwner = req.user._id === user._id;
+      
+  
+      const isOwner = req.user._id.equals(user._id);
 
     
       res.json({ user, isOwner });
