@@ -6,34 +6,29 @@ import { loginSchema } from "../schemas/userSchema";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import InputForm from "../components/ui/InputForm";
+import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const {register, handleSubmit} = useForm() 
 
     const navigate = useNavigate();
 
     const { mutate, isPending } = useMutation({
         mutationFn: login,
-        onSuccess: async (data) => {       
+        onSuccess: (data) => {       
         toast.success(data.message, {
             onClose: () => navigate("/"),
             autoClose: 2000,
         });
         },
-        onError: async (error) => {
+        onError: (error) => {
         toast.error(error.message);
         },
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = {
-        email,
-        password,
-        };
+    const onSubmit = (data) => {
 
-        const result = loginSchema.safeParse(formData);
+        const result = loginSchema.safeParse(data);
 
         if (!result.success) {
         result.error.issues.map((issue) => toast.error(issue.message));
@@ -41,50 +36,43 @@ export default function LoginPage() {
         return;
         }
 
-        mutate(formData);
+        mutate(result.data);
     };
 
     return (
         <form
         className=" rounded-xl flex flex-col gap-2 w-full max-w-lg"
-        onSubmit={(e) => {
-            handleSubmit(e);
-        }}
+        onSubmit={handleSubmit(onSubmit)}
         >
-        <div className="flex flex-col-reverse items-center gap-3">
-            <p className="text-center text-2xl font-medium">
-            Sign in to <span className="bg-linear-to-r font-bold from-celeste-500 via-menta-500 to-accent-500 bg-clip-text text-transparent">Notitas</span>
-            </p>
-
-            <img src="logo-notitas.png" alt="Logo Notitas" className="w-18" />
+        <div className="flex flex-col items-center gap-3">
+            <img src="/logo-notitas.png" className="w-18"></img>
+            <p className="text-center text-3xl font-bold flex items-center gap-2">
+            Notitas
+            </p>            
+            <p className="text-sidebar-ring">Explore and share notes with the world</p>
+           
         </div>
 
         <InputForm
             label={"Email"}
-            name={"Email"}
+            name={"email"}
             type={"email"}
-            required={true}
+            required
             placeholder={"Enter your email"}
-            value={email}
-            onChange={(e) => {
-            setEmail(e.target.value);
-            }}
+            register={register}
         />
         <InputForm
             label={"Password"}
-            name={"Password"}
+            name={"password"}
             type={"password"}
-            required={true}
+            required
             placeholder={"Enter password"}
-            value={password}
-            onChange={(e) => {
-            setPassword(e.target.value);
-            }}
+            register={register}
         ></InputForm>
 
         <button
             className="
-            bg-linear-to-r from-celeste-500 via-menta-500 to-accent-500
+            bg-primary text-primary-foreground
             text-warm-500 rounded-lg py-2 mt-2
             shadow-md transition-all duration-300 cursor-pointer
             hover:brightness-105 
@@ -94,7 +82,7 @@ export default function LoginPage() {
         </button>
         <Link to={"/register"} className="text-sm text-center mt-5 group">
             Don´t have an account?{" "}
-            <span className="bg-linear-to-r from-celeste-500 via-menta-500 to-accent-500 bg-clip-text text-transparent font-bold ">
+            <span className="text-primary font-bold ">
             Sign up
             </span>
         </Link>

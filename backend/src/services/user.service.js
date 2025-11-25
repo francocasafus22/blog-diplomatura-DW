@@ -43,19 +43,12 @@ export async function loginService(email, password) {
 export async function registerService({
   email,
   password,
-  firstName,
-  lastName,
-  dni,
   username,
 }) {
-  const userExist = await User.findOne({ $or: [{ email }, { dni }] });
+  const userExist = await User.findOne({email});
 
   if (userExist) {
-    const error = new Error(
-      userExist.email == email
-        ? "El email ya está en uso"
-        : "El DNI ya está en uso",
-    );
+    const error = new Error("El email ya está en uso");
     error.status = 409;
     throw error;
   }
@@ -74,9 +67,6 @@ export async function registerService({
   await User.create({
     email,
     username: userSlug,
-    password: hashedPassword,
-    dni,
-    firstName,
-    lastName,
+    password: hashedPassword
   });
 }

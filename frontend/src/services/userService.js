@@ -23,3 +23,13 @@ export async function getUser(){
     }
 }
 
+export async function registerUser(formData) {
+    try{
+        const {data} = await api.post("/user/register", formData);
+        return data 
+    }catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
+}

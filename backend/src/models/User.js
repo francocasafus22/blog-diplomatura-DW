@@ -3,16 +3,14 @@ import { Schema, model, Types } from "mongoose";
 const userSchema = new Schema(
   {
     firstName: {
-      type: String,
-      
+      type: String,      
     },
     lastName: {
       type: String,
-      
     },
     username: {
       type: String,
-      rqeuired: true,
+      required: true,
       unique: true,
     },
     image: { type: String },
@@ -26,10 +24,6 @@ const userSchema = new Schema(
       required: true,
     },
 
-    rol: {
-      type: String,
-      default: "user",
-    },
   },
   {
     timestamps: true,

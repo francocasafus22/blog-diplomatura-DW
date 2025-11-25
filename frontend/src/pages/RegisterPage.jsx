@@ -1,37 +1,44 @@
 import { useMutation } from "@tanstack/react-query";
 import InputForm from "../components/ui/InputForm";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { registerUser } from "../services/userService";
+import {useForm} from "react-hook-form"
 
 export default function RegisterPage(){
 
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const navigate = useNavigate()
+    const {register, handleSubmit} = useForm()
 
     const {mutate, isPending} = useMutation({
-        mutationFn: ()=>{},
-        onSuccess: (data)=>{toast.success(data)},
-        onError: (error)=>{toast.success(error.message)}
+        mutationFn: registerUser,
+        onSuccess: (data)=>{
+            toast.success(data.message, {
+                onClose: ()=>navigate("/login"),
+                autoClose: 2000
+            });
+            
+        },
+        onError: (error)=>{console.log(error)}
     })
 
-    const handleSubmit = (e) => {
-        e.prevent.default()
+    const onSubmit = (data) => {
+        mutate(data)     
     }
     return(
         <form
         className=" rounded-xl flex flex-col gap-2 w-full max-w-lg"
-        onSubmit={(e) => {
-            handleSubmit(e);
-        }}
+        onSubmit={handleSubmit(onSubmit)}
         >
-        <div className="flex flex-col-reverse items-center gap-3">
+        <div className="flex flex-col-reverse items-center gap-2">
+            <p className="text-sidebar-ring">Explore and share notes with the world</p>
             <p className="text-center text-2xl font-medium">
-            Sign up for <span className="bg-linear-to-r font-bold from-celeste-500 via-menta-500 to-accent-500 bg-clip-text text-transparent">Notitas</span>
+            Sign up for <span className="">Notitas</span>
             </p>
 
             <img src="logo-notitas.png" alt="Logo Notitas" className="w-18" />
+            
         </div>
 
         
@@ -39,51 +46,44 @@ export default function RegisterPage(){
             label={"Username"}
             name={"username"}                        
             placeholder={"Enter your username"}
-            value={username}
-            onChange={(e) => {
-                setUsername(e.target.value)
-            }}
+            register = {register}
+            required
         />
         
         
         <InputForm
             label={"Email"}
-            name={"Email"}
+            name={"email"}
             type={"email"}
-            required={true}
+            required
             placeholder={"Enter your email"}
-            value={email}
-            onChange={(e) => {
-                setEmail(e.target.value)
-            }}
+            register={register}
+            
         />
         
         <InputForm
             label={"Password"}
-            name={"Password"}
+            name={"password"}
             type={"password"}
-            required={true}
+            required
             placeholder={"Enter password"}
-            value={password}
-            onChange={(e) => {
-                setPassword(e.target.value)
-            }}
+            register={register}
+            
         ></InputForm>
 
         <button
             className="
-            bg-linear-to-r from-celeste-500 via-menta-500 to-accent-500
-            text-warm-500 rounded-lg py-2 mt-2
-            shadow-xl transition-all duration-300 cursor-pointer
-            hover:brightness-105 
+            bg-primary text-primary-foreground rounded-lg py-2 mt-2
+            transition-all duration-300 cursor-pointer
+            hover:shadow-2xl
         "
         >
             {isPending ? "Cargando" : "Create account"}
         </button>
-        <Link to={"/register"} className="text-sm text-center mt-5 group">
+        <Link to={"/login"} className="text-sm text-center mt-5 group">
             ¿Already have an account?{" "}
-            <span className="bg-linear-to-r from-celeste-500 via-menta-500 to-accent-500 bg-clip-text text-transparent font-bold ">
-            Sign in
+            <span className="text-primary font-bold ">
+            Log in
             </span>
         </Link>
         </form>

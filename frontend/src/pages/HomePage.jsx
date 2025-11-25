@@ -5,6 +5,6 @@ export default function HomePage(){
     const user = useOutletContext()
     
     return(
-        <p>Hola {user.firstName}</p>
+        <p>Hola {user.username}</p>
     )
 }

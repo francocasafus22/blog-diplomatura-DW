@@ -54,16 +54,13 @@ export default class userController {
     }
   }
 
-  static async register(req, res) {
+  static async register(req, res, next) {
     try {
-      const { email, password, firstName, lastName, dni, username } = req.body;
+      const { email, password, username } = req.body;
 
       await registerService({
         email,
-        password,
-        firstName,
-        lastName,
-        dni,
+        password,       
         username,
       });
 

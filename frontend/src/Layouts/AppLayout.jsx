@@ -3,6 +3,7 @@ import ToastNotifications from "../components/ui/ToastNotifications";
 import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/ui/Loading"
+import Navbar from "../components/navbar";
 
 export default function AppLayout() {
     const { user, isLoading, logout } = useAuth();
@@ -25,7 +26,7 @@ export default function AppLayout() {
     if(!user) return null
 
     return (
-        <>       
+        <>  <Navbar user={user}/>     
             <Outlet context={user} />
             <ToastNotifications />
         </>
