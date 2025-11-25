@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { getUser } from "../services/userService";
@@ -10,12 +10,17 @@ export const AuthContext = createContext()
 export function AuthProvider({children}){
     const navigate = useNavigate()
     const queryClint = useQueryClient();
+    const location = useLocation()
+
+    const authRoutes = ["/login", "/register"];
+    const shouldFetchUser = !authRoutes.includes(location.pathname)
 
     const {data: user, isLoading, isError, refetch, error} = useQuery({
         queryKey: ["user"],
         queryFn: getUser,
         refetchOnWindowFocus: false,
-        retry: 1
+        retry: 1,
+        enabled: shouldFetchUser        
     })
 
     const logout = async () => {

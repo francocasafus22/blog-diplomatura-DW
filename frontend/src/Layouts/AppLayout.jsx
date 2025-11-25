@@ -26,7 +26,7 @@ export default function AppLayout() {
     if(!user) return null
 
     return (
-        <>  <Navbar user={user}/>     
+        <>  <Navbar user={user} logout={logout}/>     
             <Outlet context={user} />
             <ToastNotifications />
         </>

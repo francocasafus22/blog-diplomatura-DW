@@ -16,11 +16,9 @@ export default function LoginPage() {
     const { mutate, isPending } = useMutation({
         mutationFn: login,
         onSuccess: (data) => {       
-        toast.success(data.message, {
-            onClose: () => navigate("/"),
-            autoClose: 2000,
-        });
-        },
+            toast.success(data.message);                     
+            navigate("/")
+        },  
         onError: (error) => {
         toast.error(error.message);
         },
@@ -77,6 +75,7 @@ export default function LoginPage() {
             shadow-md transition-all duration-300 cursor-pointer
             hover:brightness-105 
         "
+        type="submit"
         >
             {isPending ? "Cargando" : "Iniciar Sesión"}
         </button>
