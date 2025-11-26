@@ -1,6 +1,7 @@
 import { useState } from "react";
+import ErrorMessage from "./ErrorMessage";
 
-export default function InputForm({label, name, type, required, placeholder, register}){
+export default function InputForm({label, name, type, required, placeholder, register, error}){
     return(
         <label className="flex flex-col gap-1">
                     <span className="text-sm font-medium">{label}</span>
@@ -11,11 +12,12 @@ export default function InputForm({label, name, type, required, placeholder, reg
                     placeholder={placeholder}
                     {...register(name, {required})}
                     className={`text-md border border-border rounded-md py-1 px-3 focus:shadow-xl placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-ring shadow-xs`}/>
+                    {error && <ErrorMessage message={error}/>}
         </label>
     )
 }
 
-export function TextAreaInput({label, name, type, required, placeholder, register}){
+export function TextAreaInput({label, name, type, required, placeholder, register, error}){
     return(
         <label className="flex flex-col gap-1">
                     <span className="text-sm font-medium">{label}</span>
@@ -26,11 +28,12 @@ export function TextAreaInput({label, name, type, required, placeholder, registe
                     placeholder={placeholder}
                     {...register(name, {required})}
                     className={`text-md border border-border rounded-md py-1 px-3 focus:shadow-xl placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-ring shadow-xs`}/>
+                    {error && <ErrorMessage message={error}/>}
         </label>
     )
 }
 
-export function TagsInput({ label, name, required, placeholder, register, setValue }) {
+export function TagsInput({ label, name, required, placeholder, register, setValue, error }) {
     const [tags, setTags] = useState([]);
     const [input, setInput] = useState("");
 
@@ -69,6 +72,7 @@ export function TagsInput({ label, name, required, placeholder, register, setVal
             focus:shadow-xl placeholder:text-placeholder 
             focus:outline-none focus:ring-2 focus:ring-ring shadow-xs`}
         />
+        {error && <ErrorMessage message={error}/>}
 
         {/* Tags visuales */}
         <div className="flex flex-wrap gap-2 mt-2">

@@ -18,23 +18,26 @@ import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { createPost } from "@/services/postServices";
 import { toast } from "react-toastify";
+import { newNoteSchema } from "@/schemas/postSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 
 export default function NewNoteForm() {
-    const { register, handleSubmit, setValue } = useForm();
+    const { register, handleSubmit, setValue, formState: {errors} } = useForm({resolver: zodResolver(newNoteSchema)});
 
     const { mutate, isPending } = useMutation({
-  mutationFn: createPost,
-  onSuccess: (data) => {
-    console.log("SUCCESS DATA:", data);
-  },
-  onError: (error) => {
-    console.log("ERROR:", error);
-  },
-});
+      mutationFn: createPost,
+      
+      onSuccess: (data) => {
+        toast.success(data.message)
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    });
 
-    const onSubmit = (data) => {
-       console.log(data)
-
+    const onSubmit = (data) => { 
+      console.log(data)     
         mutate(data)
     };
 
@@ -61,6 +64,7 @@ export default function NewNoteForm() {
                 required
                 placeholder={"Enter the title"}
                 register={register}
+                error={errors.title?.message}
                 />
                 <InputForm
                 label={"Description"}
@@ -68,6 +72,7 @@ export default function NewNoteForm() {
                 required
                 placeholder={"Enter the description"}
                 register={register}
+                error={errors.description?.message}
                 />
                 <TextAreaInput
                 label={"Content (Support Markdown)"}
@@ -75,6 +80,7 @@ export default function NewNoteForm() {
                 required
                 placeholder={"Write your note here"}
                 register={register}
+                error={errors.body?.message}
                 />
                 <TagsInput
                 label={"Tags"}
@@ -82,6 +88,7 @@ export default function NewNoteForm() {
                 placeholder={"Add your tags and press Enter"}
                 register={register}
                 setValue={setValue}
+                error={errors.tags?.message}
                 ></TagsInput>
             </div>
             <DialogFooter>

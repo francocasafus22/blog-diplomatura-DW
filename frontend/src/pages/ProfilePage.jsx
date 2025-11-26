@@ -24,7 +24,7 @@ export default function ProfilePage() {
         refetchOnWindowFocus: false,
     });
 
-    const {
+    /*const {
         data: postData,
         isLoading: postIsLoading,
         isError: postIsError,        
@@ -34,7 +34,7 @@ export default function ProfilePage() {
         retry: 1,
         refetchOnWindowFocus: false,
     });
-
+    */
     if(userIsError) return (<div className="flex flex-col items-center justify-center h-[80vh] gap-2">
         <p className="text-primary font-light">{userError.message}</p>
         <Button className={"cursor-pointer"} onClick={()=>{navigate(-1)}}>Volver</Button>

@@ -1,4 +1,5 @@
 import { isAxiosError } from "axios";
+import api from "@/config/axios";
 
 export async function getAllUserPosts (username){
     try{
