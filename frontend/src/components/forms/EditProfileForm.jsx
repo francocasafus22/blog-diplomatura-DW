@@ -9,21 +9,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Pen } from "lucide-react";
-import InputForm, { TagsInput, TextAreaInput } from "../ui/InputForm";
+import { UserPenIcon } from "lucide-react";
+import InputForm from "../ui/InputForm";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { createPost } from "@/services/postServices";
+
+import { useMutation, useQueryClient} from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { newNoteSchema } from "@/schemas/postSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import { editProfile } from "@/services/userService";
+import { editProfileSchema } from "@/schemas/userSchema";
+import { useEffect } from "react";
 
 
-export default function EditProfileForm({open, setOpen}) {
-    const { register, handleSubmit, formState: {errors}, reset } = useForm({resolver: zodResolver(newNoteSchema)});    
+export default function EditProfileForm({open, setOpen, user}) {
+  
+    const { register, handleSubmit, formState: {errors}, reset } = useForm({resolver: zodResolver(editProfileSchema)});    
+    const queryClient = useQueryClient()
 
     const { mutate, isPending } = useMutation({
       mutationFn: editProfile,
@@ -31,22 +33,35 @@ export default function EditProfileForm({open, setOpen}) {
       onSuccess: (data) => {
         toast.success(data.message);
         reset();
-        setOpen(false);        
+        queryClient.invalidateQueries(["userProfile"])
+        setOpen(false)      
       },
       onError: (error) => {
         toast.error(error.message)
       },
     });
 
-    const onSubmit = (data) => {         
-        mutate(data)
+    const onSubmit = async (data) => {              
+      mutate(data)  
     };
+
+    useEffect(()=>{
+
+      if(open && user){
+        reset({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.username
+        })
+      }
+
+    }, [user, reset, open])
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-            <Button className={"cursor-pointer"} variant={"default"} size={"sm"}>
-            <Pen />
+            <Button className={"cursor-pointer"} variant={"secondary"} size={"sm"}>
+            <UserPenIcon/>
             Edit
             </Button>
         </DialogTrigger>
@@ -83,22 +98,7 @@ export default function EditProfileForm({open, setOpen}) {
                 register={register}
                 error={errors.username?.message}
                 />
-                <InputForm
-                label={"Image"}
-                name={"image"}
-                required
-                type={"file"}
-                register={register}
-                error={errors.image?.message}
-                />
-                <InputForm
-                label={"Banner"}
-                name={"banner"}
-                required
-                type={"file"}
-                register={register}
-                error={errors.banner?.message}
-                />
+                
             </div>
             <DialogFooter>
                 <DialogClose asChild>

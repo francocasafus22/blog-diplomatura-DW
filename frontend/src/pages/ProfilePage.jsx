@@ -9,6 +9,8 @@ import {Pen, UserRoundPen} from "lucide-react"
 import NewNoteForm from "@/components/forms/NewNoteForm";
 import { useState } from "react";
 import EditProfileForm from "@/components/forms/EditProfileForm";
+import EditProfileImageForm from "@/components/forms/EditProfileImage";
+import EditProfileBannerForm from "@/components/forms/EditProfileBanner";
 
 export default function ProfilePage() {
     const { username } = useParams();
@@ -16,6 +18,8 @@ export default function ProfilePage() {
 
     const [open, setOpen] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
+    const [openEditImage, setOpenEditImage] = useState(false)
+    const [openEditBanner, setOpenEditBanner] = useState(false)
 
     const {
         data: userData,
@@ -239,27 +243,21 @@ export default function ProfilePage() {
                     className="absolute left-1/2 -translate-x-1/2 
                     -bottom-16"
                 >
-                    <img
-                    src={userData.user.image || "/logo-placeholder.jpg"}
-                    className="w-24 h-24 rounded-full border border-border"
-                    />
+                    <EditProfileImageForm open={openEditImage} setOpen={setOpenEditImage} image={userData.user.image}/>
                     <p className="text-center font-bold">
                     @{userData.user.username}
                     </p>
                     
                 </div>
 
-                <img
-                    src={userData.user.banner}
-                    className="w-full h-full rounded-xl object-cover bg-primary"
-                />  
+                <EditProfileBannerForm open={openEditBanner} setOpen={setOpenEditBanner} banner={userData.user.banner}/>
                 </div>
                 
                 
                 <div className="flex  justify-between items-end">
                     <p className="text-4xl font-bold">Notes</p>
                     {userData.isOwner && <div className="flex  gap-2">
-                        <EditProfileForm open={openEdit} setOpen={setOpenEdit}/>
+                        <EditProfileForm open={openEdit} setOpen={setOpenEdit} user={userData.user}/>
                         <NewNoteForm open={open} setOpen={setOpen}/>
                     </div>}   
                 </div>

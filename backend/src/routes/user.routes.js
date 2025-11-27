@@ -19,6 +19,8 @@ router.post(
   errorInputsHandler,
   userController.register,
 );
+router.post("/image", authMiddleware, userController.editProfileImage);
+router.post("/banner", authMiddleware, userController.editProfileBanner)
 router.post(
   "/login",
   body("password").notEmpty().withMessage("La contraseña es obligatoria"),
