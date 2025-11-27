@@ -23,7 +23,7 @@ import { editProfile } from "@/services/userService";
 
 
 export default function EditProfileForm({open, setOpen}) {
-    const { register, handleSubmit, setValue, formState: {errors}, reset } = useForm({resolver: zodResolver(newNoteSchema)});    
+    const { register, handleSubmit, formState: {errors}, reset } = useForm({resolver: zodResolver(newNoteSchema)});    
 
     const { mutate, isPending } = useMutation({
       mutationFn: editProfile,

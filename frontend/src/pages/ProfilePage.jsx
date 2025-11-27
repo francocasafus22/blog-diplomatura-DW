@@ -229,7 +229,7 @@ export default function ProfilePage() {
 
     return (
         <>
-        <div className="min-h-scren max-w-5xl mx-auto my-5 px-5 lg:px-0 space-y-5">
+        <div className="min-h-scren max-w-5xl mx-auto my-5 px-5 xl:px-0 space-y-5">
             {userIsLoading ? (
             <p>Cargando...</p>
             ) : (
@@ -264,7 +264,7 @@ export default function ProfilePage() {
                     </div>}   
                 </div>
                 
-                {postIsLoading ? <p className="text-primary font-medium">Loading notes...</p> : <div className="my-5 grid grid-cols-1 md:grid-cols-3 gap-5">
+                {postIsLoading ? <p className="text-primary font-medium">Loading notes...</p> : <div className="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {postData.posts.map((post) => (
                     <div className="p-8 rounded-xl border border-border bg-secondary text-secondary-foreground shadow-md hover:shadow-xl transition-shadow duration-200 cursor-pointer" onClick={()=>{navigate(`/note/${post.slug}`)}} key={post.slug}>                                    
 
