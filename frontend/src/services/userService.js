@@ -44,3 +44,14 @@ export async function getProfile(username){
         }
     }
 }
+
+export async function editProfile(formData){
+    try{
+        const {data} = await api.put("/user", formData);
+        return data 
+    }catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
+}

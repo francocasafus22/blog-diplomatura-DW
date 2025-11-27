@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 import {Pen, UserRoundPen} from "lucide-react"
 import NewNoteForm from "@/components/forms/NewNoteForm";
 import { useState } from "react";
+import EditProfileForm from "@/components/forms/EditProfileForm";
 
 export default function ProfilePage() {
     const { username } = useParams();
     const navigate = useNavigate()
 
     const [open, setOpen] = useState(false)
+    const [openEdit, setOpenEdit] = useState(false)
 
     const {
         data: userData,
@@ -257,7 +259,7 @@ export default function ProfilePage() {
                 <div className="flex  justify-between items-end">
                     <p className="text-4xl font-bold">Notes</p>
                     {userData.isOwner && <div className="flex  gap-2">
-                        <Button size={"sm"} variant={"outline"}  className="cursor-pointer"><UserRoundPen/> Edit</Button>
+                        <EditProfileForm open={openEdit} setOpen={setOpenEdit}/>
                         <NewNoteForm open={open} setOpen={setOpen}/>
                     </div>}   
                 </div>
