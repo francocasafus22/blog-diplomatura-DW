@@ -15,7 +15,7 @@ import { Pen } from "lucide-react";
 import InputForm, { TagsInput, TextAreaInput } from "../ui/InputForm";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/services/postServices";
 import { toast } from "react-toastify";
 import { newNoteSchema } from "@/schemas/postSchema";
@@ -25,13 +25,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function NewNoteForm({open, setOpen}) {
     const { register, handleSubmit, setValue, formState: {errors}, reset } = useForm({resolver: zodResolver(newNoteSchema)});    
-
+    const queryClient = useQueryClient()
     const { mutate, isPending } = useMutation({
       mutationFn: createPost,
       
       onSuccess: (data) => {
         toast.success(data.message);
         reset();
+        queryClient.invalidateQueries(["userPosts"])
         setOpen(false);        
       },
       onError: (error) => {

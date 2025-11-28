@@ -22,6 +22,7 @@ export async function validatePostExist(req, res, next) {
       throw error;
     }
 
+
     req.post = post;
 
     next();

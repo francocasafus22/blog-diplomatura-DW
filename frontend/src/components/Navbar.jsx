@@ -26,9 +26,9 @@ export default function Navbar({user, logout}) {
             </div>
         </div>
         <ul className="hidden md:flex md:gap-1">
-            <Link to={"/home"} className={`hover:bg-primary py-2 px-5 rounded-xl hover:text-primary-foreground cursor-pointer transition-colors duration-200 ${isActive("/")}`}>Home</Link>
-            <Link to={"/notes"} className={`hover:bg-primary py-2 px-5 rounded-xl hover:text-primary-foreground cursor-pointer transition-colors duration-200 ${isActive("/notes")}`}>Explore</Link>
-            <Link to={"/explore"} className={`hover:bg-primary py-2 px-5 rounded-xl hover:text-primary-foreground cursor-pointer transition-colors duration-200 ${isActive("/explore")}`}>Write</Link>            
+            <Link to={"/"} className={`hover:bg-primary py-2 px-5 rounded-xl hover:text-primary-foreground cursor-pointer transition-colors duration-200 ${isActive("/")}`}>Home</Link>
+            <Link to={"/explore"} className={`hover:bg-primary py-2 px-5 rounded-xl hover:text-primary-foreground cursor-pointer transition-colors duration-200 ${isActive("/notes")}`}>Explore</Link>
+            
         </ul>
                     
             {user ? <DropdownMenu>
@@ -36,7 +36,7 @@ export default function Navbar({user, logout}) {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem><Link to={`/${user.username}`}>Profile</Link></DropdownMenuItem>
+                <DropdownMenuItem><Link to={`/${user.username}`} className="w-full">Profile</Link></DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem><button onClick={async ()=>{await logout()}}>Log out</button></DropdownMenuItem>                
             </DropdownMenuContent>

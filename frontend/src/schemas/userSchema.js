@@ -5,6 +5,7 @@ export const loginSchema = z.object({
     password: z.string().min(1, {message: "La contraseña es obligatoria"})
 })
 
+
 export const editProfileSchema = z.object({
     firstName: z.string().optional(),
     lastName: z.string().optional(),

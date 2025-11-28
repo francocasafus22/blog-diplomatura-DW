@@ -40,6 +40,8 @@ export async function loginService(email, password) {
   return { token };
 }
 
+
+
 export async function registerService({
   email,
   password,

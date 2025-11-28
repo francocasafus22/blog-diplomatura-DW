@@ -42,7 +42,7 @@ export default function NotePage(){
                 
                 <div className="flex gap-2">                    
                     {data.tags.map(tag=>(
-                        <Badge variant={"secondary"}>{tag}</Badge>
+                        <Badge variant={"secondary"} key={tag}>{tag}</Badge>
                     ))}
                 </div>                
             </div>    

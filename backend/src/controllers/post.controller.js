@@ -3,8 +3,11 @@ import {
   editPost,
   findPostsByUser,
   deletePost,
+  getAllPosts,
+  like,
   
 } from "../services/post.service.js";
+import {checkPassword} from "../utils/auth.js"
 import User from "../models/User.js";
 
 export default class PostController {
@@ -22,6 +25,20 @@ export default class PostController {
       res.json({ posts });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async getAll(req,res,next){
+    try {
+      const {page=1, q=""} = req.query;
+      
+
+      const data = await getAllPosts({page : Number(page), q, userId: req.user?._id})
+
+      res.json(data)
+
+    } catch (error) {      
+        next(error);
     }
   }
 
@@ -58,6 +75,16 @@ export default class PostController {
   static async delete(req, res, next) {
     try {
       const userId = req.user._id;
+      const {password} = req.body;
+
+      const {password : userPassword} = await User.findById(userId).select("password -_id");      
+      const isCorrect = await checkPassword(password, userPassword)
+      
+      if(!isCorrect){
+        const error = new Error("Password is not correct")
+        error.status = 401;
+        throw error
+      }
 
       await deletePost({
         postData: req.post,
@@ -66,7 +93,19 @@ export default class PostController {
 
       res.json({ message: "Post eliminado correctamente" });
     } catch (error) {
+      console.log("[ERROR DELETE POST]: ", error.message)      
       next(error);
+    }
+  }
+
+  static async likePost(req,res,next){
+    try {
+      const {_id} = req.user;
+
+      const message = await like({userId: _id, post: req.post})
+      res.json({message})
+    } catch (error) {
+      next(error)
     }
   }
 }

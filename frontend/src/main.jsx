@@ -4,6 +4,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../src/contexts/AuthContext.jsx";
 import "./index.css";
+import ScrollTop from "./components/ScrollTop.jsx";
 
 import Router from "./router.jsx";
 
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
+          <ScrollTop/>
           <Router />
         </AuthProvider>
       </BrowserRouter>

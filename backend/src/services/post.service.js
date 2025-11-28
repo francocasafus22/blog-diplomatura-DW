@@ -49,3 +49,58 @@ export async function deletePost({ postData, userId }) {
     throw err;
   }
 }
+
+export async function getAllPosts({page = 1, q="", userId}){
+  try {
+    
+    const limit = 10;
+    const skip = (page - 1) * limit
+
+    const posts = await Post.aggregate([
+      {
+        $match: {title: {$regex: q, $options: "i"}}
+      },
+      {$skip: skip},
+      {$limit: limit},
+      {
+        $addFields: {
+          likesCount: {$size: "$likes"},
+          likedByUser: {$in: [userId, "$likes"]}
+        }
+      },
+      {$project:{
+        likes:0
+      }}
+    ])
+    const total = await Post.countDocuments()
+
+    return {
+      posts,
+      page,
+      total,
+      totalPages: Math.ceil(total / limit)
+    }
+
+  } catch (error) {
+    console.error("[GET ALL POSTS]".red.bold, `Error: ${error.message}`);
+    throw error;
+  }
+}
+
+export async function like({userId, post}){
+  try {
+    if(post.likes.includes(userId)){
+      post.likes = post.likes.filter(id=>id.toString() !== userId.toString())
+      await post.save()
+      return "Post unliked successfully"
+    }
+
+    post.likes.push(userId)
+    await post.save()
+
+    return "Post liked successfully"
+  } catch (error) {
+    console.error("[POST LIKE]".red.bold, `Error: ${error.message}`)
+    throw error
+  }
+}

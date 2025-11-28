@@ -20,7 +20,7 @@ export default function PublicLayout() {
     return (
         <> 
             <div className="flex flex-col min-h-screen">
-            <Navbar user={user} logout={logout}/>     
+            <Navbar user={user} logout={logout}/>                 
             <main className="flex-1">
                 <Outlet context={user} />
             </main>
