@@ -40,7 +40,7 @@ export default class userController {
       }
       
   
-      const isOwner = req.user._id.equals(user._id);
+      const isOwner = req.user ? req.user._id.equals(user._id) : false;
 
     
       res.json({ user, isOwner });

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import InputForm from "../components/ui/InputForm";
 import { useForm } from "react-hook-form";
+import Loading from "@/components/ui/Loading";
 
 export default function LoginPage() {
     const {register, handleSubmit} = useForm() 
@@ -77,7 +78,7 @@ export default function LoginPage() {
         "
         type="submit"
         >
-            {isPending ? "Cargando" : "Iniciar Sesión"}
+            {isPending ? <Loading color="border-primary-foreground"/> : "Iniciar Sesión"}
         </button>
         <Link to={"/register"} className="text-sm text-center mt-5 group">
             Don´t have an account?{" "}

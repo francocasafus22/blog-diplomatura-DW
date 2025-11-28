@@ -9,7 +9,7 @@ export default class CommentController {
       const { postId } = req.params;
       const comments = await getAllCommentsByPost(postId);
 
-      res.json({ comments });
+      res.json(comments);
     } catch (error) {
       next(error);
     }

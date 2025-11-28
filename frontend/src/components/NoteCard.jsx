@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import InputForm from "./ui/InputForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useForm } from "react-hook-form";
@@ -68,18 +68,25 @@ export default function NoteCard({ post, canDelete, canLike }) {
         }
     })
 
-    console.log(post)
-
     const onSubmit = (data) => {
         mutate({ formData: data, postId: post._id });
     };
 
+    const handleCardClick = () => {
+        if(!open){
+            navigate(`/note/${post.slug}`)
+        }
+    }
+
+    const handleDeleteClick = (e) => {
+        e.stopPropagation();
+        setOpen(true)
+    }
+    
     return (
         <div
-        className="p-8 rounded-xl border border-border bg-secondary text-secondary-foreground shadow-md hover:shadow-xl relative transition-shadow duration-200 cursor-pointer"
-        onClick={() => {
-            !open && navigate(`/note/${post.slug}`);
-        }}
+        className={`p-8 rounded-xl border border-border bg-secondary text-secondary-foreground shadow-md relative transition-shadow duration-200 ${open ? "cursor-default" : "cursor-pointer hover:shadow-xl"}`}
+        onClick={handleCardClick}
         key={post.slug}
         >
         <div className="flex flex-col h-full justify-between gap-2">
@@ -87,15 +94,13 @@ export default function NoteCard({ post, canDelete, canLike }) {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                 <button
-                    onClick={(e) => {
-                    e.stopPropagation();
-                    }}
+                    onClick={(e)=>handleDeleteClick(e)}
                     className="absolute right-0 top-0 m-2 hover:text-destructive transition-all duration-200"
                 >
                     <X size={18} />
                 </button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[425px]" onInteractOutside={(e)=>e.preventDefault()}>
                 <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
                     <DialogHeader>
                     <DialogTitle>
@@ -132,7 +137,7 @@ export default function NoteCard({ post, canDelete, canLike }) {
             <h2 className="text-2xl font-semibold">{post.title}</h2>
             <div className="flex-wrap space-x-1 space-y-1">
                 {post.tags.map((tag) => (
-                <Badge>{tag}</Badge>
+                <Badge key={tag}>{tag}</Badge>
                 ))}
             </div>
             <p className="text-muted-foreground text-base line-clamp-5">

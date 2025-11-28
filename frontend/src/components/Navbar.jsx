@@ -40,12 +40,10 @@ export default function Navbar({user, logout}) {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem><Link to={`/${user.username}`} className="w-full">Profile</Link></DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem><button onClick={async ()=>{await logout()}}>Log out</button></DropdownMenuItem>   
-
-                          
+                <DropdownMenuItem><Link className="w-full">Settings</Link></DropdownMenuItem>
+                <DropdownMenuItem><button onClick={async ()=>{await logout()}} className="cursor-pointer w-full text-start">Log out</button></DropdownMenuItem>                             
             </DropdownMenuContent>
-            </DropdownMenu> : <Button onClick={()=>navigate("/login")}>Log in</Button>}
+            </DropdownMenu> : <Button onClick={()=>navigate("/login")} className={"hover:shadow-xl cursor-pointer"}>Log in</Button>}
         
         </nav>
     );

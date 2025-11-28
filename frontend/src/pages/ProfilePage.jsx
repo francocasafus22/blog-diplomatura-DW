@@ -50,7 +50,7 @@ export default function ProfilePage() {
         <Button className={"cursor-pointer"} onClick={()=>{navigate(-1)}}>Volver</Button>
     </div>)
 
-    
+    console.log(userData)
 
     return (
         <>
@@ -91,7 +91,7 @@ export default function ProfilePage() {
                 
                 {postIsLoading ? <p className="text-primary font-medium">Loading notes...</p> : <div className="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {postData.posts.map((post) => (
-                    <NoteCard post={post} key={post._id} canDelete/>
+                    <NoteCard post={post} key={post._id} canDelete={userData ? userData.isOwner : false}/>
                 ))}
 
                 {postData.posts.length == 0 && <p className="text-muted-foreground">No notes found yet</p>}

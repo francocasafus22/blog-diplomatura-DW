@@ -12,9 +12,8 @@ import ExplorePage from "./pages/ExplorePage"
 export default function Router(){
     return(         
         <Routes>
-            <Route element={<AppLayout/>}>
-                
-                <Route path="/:username" element={<ProfilePage/>}></Route>                
+            <Route element={<AppLayout/>}>                
+                                
             </Route>
             <Route element={<AuthLayout/>}>
                 <Route path="/login" element={<LoginPage/>}></Route>
@@ -24,6 +23,7 @@ export default function Router(){
                 <Route path="/" element={<HomePage/>}></Route>
                 <Route path="/note/:slug" element={<NotePage/>}></Route>
                 <Route path="/explore" element={<ExplorePage/>}></Route>
+                <Route path="/:username" element={<ProfilePage/>}></Route>
             </Route>
         </Routes>              
     )

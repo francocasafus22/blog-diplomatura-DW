@@ -2,13 +2,13 @@ import { Router } from "express";
 import userController from "../controllers/user.controller.js";
 import errorInputsHandler from "../middlewares/validation.middleware.js";
 import { body } from "express-validator";
-import authMiddleware from "../middlewares/auth.middleware.js";
+import authMiddleware, { optionalAuthMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 router.get("/all", userController.getAll);
 router.get("/",authMiddleware, userController.getUser)
-router.get("/profile/:username", authMiddleware, userController.getProfile);
+router.get("/profile/:username", optionalAuthMiddleware, userController.getProfile);
 router.post(
   "/register",
   body("username").notEmpty().withMessage("El username es obligatorio"),
