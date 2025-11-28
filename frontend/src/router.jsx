@@ -5,7 +5,7 @@ import AppLayout from "./layouts/AppLayout.jsx"
 import AuthLayout from "./layouts/AuthLayout.jsx"
 import RegisterPage from "./pages/RegisterPage"
 import ProfilePage from "./pages/ProfilePage"
-import PublicLayout from "./layouts/PublicLayout"
+import PublicLayout from "./layouts/PublicLayout.jsx"
 import NotePage from "./pages/NotePage"
 import ExplorePage from "./pages/ExplorePage"
 
