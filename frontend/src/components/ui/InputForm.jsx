@@ -1,17 +1,17 @@
 import { useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 
-export default function InputForm({label, name, type, required, placeholder, register, error}){
+export default function InputForm({label, name, type, required, placeholder, register, error, className}){
     return(
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1 flex-1">
                     <span className="text-sm font-medium">{label}</span>
                     <input
                     name={name}
                     type={type || "text"}
-                    required={required}
+                    required={required}                                   
                     placeholder={placeholder}
                     {...register(name, {required})}
-                    className={`text-md border border-border rounded-md py-1 px-3 focus:shadow-xl placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-ring shadow-xs`}/>
+                    className={`text-md border border-border rounded-md py-1 px-3 focus:shadow-xl placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-ring shadow-xs  ${className}`}/>
                     {error && <ErrorMessage message={error}/>}
         </label>
     )

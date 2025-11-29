@@ -11,3 +11,26 @@ export async function getCommentsByPost ({postId}) {
         }
     }
 }
+
+export async function addComment ({postId, formData}) {
+    
+    try {
+        const {data} = await api.post(`/comment/${postId}`, formData)
+        return data
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function deleteComment ({commentId}){
+    try {
+        const {data} = await api.delete(`/comment/${commentId}`)
+        return data;
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error)
+        }
+    }
+}

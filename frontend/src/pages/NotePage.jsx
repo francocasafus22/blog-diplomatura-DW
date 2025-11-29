@@ -5,18 +5,25 @@ import { Button } from "@/components/ui/button";
 import Loading from "@/components/ui/Loading";
 import { getOneBySlug } from "@/services/postServices";
 import { AvatarFallback } from "@radix-ui/react-avatar";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { User } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCommentsByPost } from "../services/commentService.js";
+import CommentCard from "@/components/CommentCard.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
+
+import { Input } from "@/components/ui/input.jsx";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import AddCommentForm from "@/components/forms/AddCommentForm.jsx";
 
 export default function NotePage() {
     const { slug } = useParams();
-
     const navigate = useNavigate();
+    const {user} = useAuth()
 
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ["note"],
+        queryKey: ["note", slug],
         queryFn: () => getOneBySlug({ slug }),
         retry: 1,
         refetchOnWindowFocus: false,
@@ -28,14 +35,12 @@ export default function NotePage() {
         isError: isErrorComments,
         error: errorComments,
     } = useQuery({
-        queryKey: ["comments"],
+        queryKey: ["comments", slug],
         queryFn: () => getCommentsByPost({ postId: data._id }),
         retry: 1,
         refetchOnWindowFocus: false,
-        enabled: !!data,
+        enabled: !!data?._id,
     });
-
-    if(comments)console.log(comments)
 
     if (isError)
         return (
@@ -88,26 +93,14 @@ export default function NotePage() {
 
         <p className="text-5xl font-bold border-t-2 pt-5 border-border ">Comentarios</p>        
 
-        {isLoadingComments ? <Loading/> : (
-            <div>
-                {comments.map(comment=>(<div className="flex space-x-2 bg-secondary rounded-lg p-5 text-secondary-foreground gap-2" key={comment._id}>
-                <Avatar className={"h-10 w-10"}>
-                        <AvatarImage
-                        src={comment.authorAvatar || "/logo-placeholder.jpg"}
-                        alt={comment.authorName}
-                        ></AvatarImage>
-                        <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div >
-                    <div className="flex items-center gap-2">
-                        <p className="text-sm font-bold">@{comment.authorName}</p>
-                        <p className="text-sm text-muted-foreground">{new Date(comment.createdAt).toLocaleDateString()}</p>
-                    </div>
-                    <p>{comment.body}</p>
-                </div>
-            </div>))}
-            </div>
-        )}
+        
+            <div className="space-y-2">
+                <>
+                    {user && <AddCommentForm postId={data._id} slug={slug} user={user}/>}
+                    {isLoadingComments ? <Loading/> : comments.map(comment=>(<CommentCard comment={comment} key={comment._id} slug={slug}/>))}
+                    {comments?.length == 0 && <p className="font-semibold text-md mt-5">Be the first to comment</p>}
+                </>
+            </div>       
 
         <Link className="flex items-center justify-center mt-10" to={-1}>
             <Button
