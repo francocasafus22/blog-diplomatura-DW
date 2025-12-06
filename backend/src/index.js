@@ -15,8 +15,6 @@ import {
 dotenv.config();
 connectDB();
 
-
-
 const corsOptions = {
   origin: `${process.env.FRONT_URL}`,
   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
